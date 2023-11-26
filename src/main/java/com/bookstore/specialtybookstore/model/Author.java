@@ -2,6 +2,7 @@ package com.bookstore.specialtybookstore.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,12 +15,16 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AuthorID", nullable = false)
     private int authorID;
 
+    @Column(name = "AuthorName", nullable = false, length = 255)
     private String authorName;
 
+    @Column(name = "Birthdate")
     private LocalDate birthdate;
 
+    @Column(name = "Nationality", length = 100)
     private String nationality;
 
     public Author() {
