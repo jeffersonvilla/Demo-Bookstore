@@ -1,0 +1,1 @@
+Management system for a specialty bookstore that focuses exclusively on rare and collectible books
