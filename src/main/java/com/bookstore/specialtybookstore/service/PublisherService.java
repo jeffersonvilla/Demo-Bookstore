@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.IPublisherService;
 import com.bookstore.specialtybookstore.model.Publisher;
 import com.bookstore.specialtybookstore.repository.PublisherRepository;
 
+@Service
 public class PublisherService implements IPublisherService{
     
     private PublisherRepository repository;

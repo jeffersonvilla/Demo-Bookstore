@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.IAwardService;
 import com.bookstore.specialtybookstore.model.Award;
 import com.bookstore.specialtybookstore.repository.AwardRepository;
 
+@Service
 public class AwardService implements IAwardService{
     
     private AwardRepository repository;

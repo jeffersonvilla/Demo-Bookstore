@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.IRestorationService;
 import com.bookstore.specialtybookstore.model.Restoration;
 import com.bookstore.specialtybookstore.repository.RestorationRepository;
 
+@Service
 public class RestorationService implements IRestorationService{
     
     private RestorationRepository repository;

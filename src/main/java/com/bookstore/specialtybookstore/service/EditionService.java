@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.IEditionService;
 import com.bookstore.specialtybookstore.model.Edition;
 import com.bookstore.specialtybookstore.repository.EditionRepository;
 
+@Service
 public class EditionService implements IEditionService{
 
     private EditionRepository repository;

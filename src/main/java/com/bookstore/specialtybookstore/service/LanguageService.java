@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.ILanguageService;
 import com.bookstore.specialtybookstore.model.Language;
 import com.bookstore.specialtybookstore.repository.LanguageRepository;
 
+@Service
 public class LanguageService implements ILanguageService{
     
     private LanguageRepository repository;

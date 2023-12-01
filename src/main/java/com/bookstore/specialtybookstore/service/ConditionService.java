@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.IConditionService;
 import com.bookstore.specialtybookstore.model.Condition;
 import com.bookstore.specialtybookstore.repository.ConditionRepository;
 
+@Service
 public class ConditionService implements IConditionService{
     
     private ConditionRepository repository;

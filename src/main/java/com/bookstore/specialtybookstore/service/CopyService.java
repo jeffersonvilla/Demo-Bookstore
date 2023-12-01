@@ -2,10 +2,13 @@ package com.bookstore.specialtybookstore.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.specialtybookstore.interfaces.ICopyService;
 import com.bookstore.specialtybookstore.model.Copy;
 import com.bookstore.specialtybookstore.repository.CopyRepository;
 
+@Service
 public class CopyService implements ICopyService{
     
     private CopyRepository repository;
