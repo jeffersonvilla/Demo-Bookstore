@@ -8,13 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Genre", schema = "dbo")
-public class Genre {
+@Table(name = "Award")
+public class Award {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdGenre")
-    private int idGenre;
+    @Column(name = "IdAward")
+    private int idAward;
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -22,21 +22,25 @@ public class Genre {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    public Genre() {
+    @Column(name = "year")
+    private Integer year;
+
+    public Award() {
     }
 
-    public Genre(int idGenre, String name, String description) {
-        this.idGenre = idGenre;
+    public Award(int idAward, String name, String description, Integer year) {
+        this.idAward = idAward;
         this.name = name;
         this.description = description;
+        this.year = year;
     }
 
-    public int getIdGenre() {
-        return idGenre;
+    public int getIdAward() {
+        return idAward;
     }
 
-    public void setIdGenre(int idGenre) {
-        this.idGenre = idGenre;
+    public void setIdAward(int idAward) {
+        this.idAward = idAward;
     }
 
     public String getName() {
@@ -55,9 +59,17 @@ public class Genre {
         this.description = description;
     }
 
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
     @Override
     public String toString() {
-        return "Genre [idGenre=" + idGenre + ", name=" + name + ", description=" + description + "]";
+        return "Award [idAward=" + idAward + ", name=" + name + ", description=" + description + ", year=" + year + "]";
     }
 
     

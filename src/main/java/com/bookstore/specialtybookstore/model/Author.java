@@ -15,42 +15,55 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AuthorID", nullable = false)
-    private int authorID;
+    @Column(name = "IdAuthor")
+    private int idAuthor;
 
-    @Column(name = "AuthorName", nullable = false, length = 255)
-    private String authorName;
+    @Column(name = "name", nullable = false, length = 255)
+    private String name;
 
-    @Column(name = "Birthdate")
+    @Column(name = "birthdate")
     private LocalDate birthdate;
 
-    @Column(name = "Nationality", length = 100)
-    private String nationality;
+    @Column(name = "deathdate")
+    private LocalDate deathdate;
+
+    @Column(name = "placeOfBirth", length = 255)
+    private String placeOfBirth;
+
+    @Column(name = "placeOfDeath", length = 255)
+    private String placeOfDeath;
+
+    @Column(name = "Biography", columnDefinition = "TEXT")
+    private String biography;
 
     public Author() {
     }
 
-    public Author(int authorID, String authorName, LocalDate birthdate, String nationality) {
-        this.authorID = authorID;
-        this.authorName = authorName;
+    public Author(int idAuthor, String name, LocalDate birthdate, LocalDate deathdate, String placeOfBirth,
+            String placeOfDeath, String biography) {
+        this.idAuthor = idAuthor;
+        this.name = name;
         this.birthdate = birthdate;
-        this.nationality = nationality;
+        this.deathdate = deathdate;
+        this.placeOfBirth = placeOfBirth;
+        this.placeOfDeath = placeOfDeath;
+        this.biography = biography;
     }
 
-    public int getAuthorID() {
-        return authorID;
+    public int getIdAuthor() {
+        return idAuthor;
     }
 
-    public void setAuthorID(int authorID) {
-        this.authorID = authorID;
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getName() {
+        return name;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getBirthdate() {
@@ -61,18 +74,43 @@ public class Author {
         this.birthdate = birthdate;
     }
 
-    public String getNationality() {
-        return nationality;
+    public LocalDate getDeathdate() {
+        return deathdate;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setDeathdate(LocalDate deathdate) {
+        this.deathdate = deathdate;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
+    public String getPlaceOfDeath() {
+        return placeOfDeath;
+    }
+
+    public void setPlaceOfDeath(String placeOfDeath) {
+        this.placeOfDeath = placeOfDeath;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
     @Override
     public String toString() {
-        return "Author [authorID=" + authorID + ", authorName=" + authorName + ", birthdate=" + birthdate
-                + ", nationality=" + nationality + "]";
+        return "Author [idAuthor=" + idAuthor + ", name=" + name + ", birthdate=" + birthdate + ", deathdate="
+                + deathdate + ", placeOfBirth=" + placeOfBirth + ", placeOfDeath=" + placeOfDeath + ", biography="
+                + biography + "]";
     }
     
 }

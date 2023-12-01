@@ -12,7 +12,7 @@ import com.bookstore.specialtybookstore.model.Author;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Integer>{
    
-    @Query("SELECT a FROM Author a WHERE LOWER(a.authorName) LIKE LOWER(CONCAT('%', :name, '%'))")
+    @Query("SELECT a FROM Author a WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     public List<Author> searchAuthorByNameLike(@Param("name") String name);
 
 }

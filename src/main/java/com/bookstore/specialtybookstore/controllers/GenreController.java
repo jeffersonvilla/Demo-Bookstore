@@ -41,7 +41,7 @@ public class GenreController {
 
     @PutMapping("/{id}")
     public Genre updateGenre(@PathVariable int id, @RequestBody Genre genre) {
-        genre.setGenreId(id);
+        genre.setIdGenre(id);
         return genreService.updateGenre(genre);
     }
 
