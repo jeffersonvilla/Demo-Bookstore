@@ -15,7 +15,7 @@ import com.bookstore.specialtybookstore.interfaces.IGenreService;
 import com.bookstore.specialtybookstore.model.Genre;
 
 @RestController
-@RequestMapping("/api/genres")
+@RequestMapping("/api/v1/genre")
 public class GenreController {
 
     private IGenreService genreService;    
