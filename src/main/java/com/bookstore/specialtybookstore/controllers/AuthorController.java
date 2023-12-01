@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookstore.specialtybookstore.interfaces.IAuthorService;
 import com.bookstore.specialtybookstore.model.Author;
-import com.bookstore.specialtybookstore.service.AuthorService;
 
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
 
-    private AuthorService authorService;    
+    private IAuthorService authorService;    
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(IAuthorService authorService) {
         this.authorService = authorService;
     }
 

@@ -18,5 +18,5 @@ public interface IGenreService {
     public void deleteGenre(int id);
 
     // Search functionality
-    //public List<Genre> searchGenreByName(String name);
+    public List<Genre> searchGenreByName(String name);
 }

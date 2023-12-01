@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookstore.specialtybookstore.interfaces.IGenreService;
 import com.bookstore.specialtybookstore.model.Genre;
-import com.bookstore.specialtybookstore.service.GenreService;
 
 @RestController
 @RequestMapping("/api/genres")
 public class GenreController {
 
-    private GenreService genreService;    
+    private IGenreService genreService;    
 
-    public GenreController(GenreService genreService) {
+    public GenreController(IGenreService genreService) {
         this.genreService = genreService;
     }
 

@@ -42,4 +42,9 @@ private GenreRepository repository;
         this.repository.deleteById(id);
     }
 
+    @Override
+    public List<Genre> searchGenreByName(String name) {
+        return this.repository.searchGenreByNameLike(name);
+    }
+
 }
