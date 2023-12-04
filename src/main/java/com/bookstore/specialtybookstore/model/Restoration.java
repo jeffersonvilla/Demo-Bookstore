@@ -1,5 +1,6 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Restoration")
-public class Restoration {
+public class Restoration implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

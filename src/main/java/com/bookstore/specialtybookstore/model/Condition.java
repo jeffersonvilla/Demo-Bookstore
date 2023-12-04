@@ -1,5 +1,7 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Condition")
-public class Condition {
+public class Condition implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

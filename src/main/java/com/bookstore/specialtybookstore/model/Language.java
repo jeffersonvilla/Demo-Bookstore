@@ -1,5 +1,7 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Language")
-public class Language {
+public class Language implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

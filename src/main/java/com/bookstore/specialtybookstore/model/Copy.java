@@ -1,5 +1,6 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Copy")
-public class Copy {
+public class Copy implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

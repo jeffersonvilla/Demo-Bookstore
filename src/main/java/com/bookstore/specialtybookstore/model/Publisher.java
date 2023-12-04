@@ -1,15 +1,21 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Publisher")
-public class Publisher {
+public class Publisher implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +31,19 @@ public class Publisher {
     @Column(name = "contact_information", length = 255)
     private String contactInformation;
 
+    @JsonBackReference
+    @ManyToMany(mappedBy = "publishers")
+    private List<Edition> editions;
+
     public Publisher() {
     }
 
-    public Publisher(int idPublisher, String name, String address, String contactInformation) {
+    public Publisher(int idPublisher, String name, String address, String contactInformation, List<Edition> editions) {
         this.idPublisher = idPublisher;
         this.name = name;
         this.address = address;
         this.contactInformation = contactInformation;
+        this.editions = editions;
     }
 
     public int getIdPublisher() {
@@ -65,6 +76,14 @@ public class Publisher {
 
     public void setContactInformation(String contactInformation) {
         this.contactInformation = contactInformation;
+    }
+
+    public List<Edition> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(List<Edition> editions) {
+        this.editions = editions;
     }
 
     @Override

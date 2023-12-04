@@ -1,17 +1,25 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Author", schema = "dbo")
-public class Author {
+public class Author implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +44,24 @@ public class Author {
     @Column(name = "Biography", columnDefinition = "TEXT")
     private String biography;
 
+    @JsonBackReference
+    @ManyToMany(mappedBy = "authors")
+    private List<Edition> editions;
+
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(
+        name = "AuthorAward",
+        joinColumns = @JoinColumn(name = "AuthorIdAuthor"),
+        inverseJoinColumns = @JoinColumn(name = "AwardIdAward")
+    )
+    private List<Award> awards;
+
     public Author() {
     }
 
     public Author(int idAuthor, String name, LocalDate birthdate, LocalDate deathdate, String placeOfBirth,
-            String placeOfDeath, String biography) {
+            String placeOfDeath, String biography, List<Edition> editions, List<Award> awards) {
         this.idAuthor = idAuthor;
         this.name = name;
         this.birthdate = birthdate;
@@ -48,6 +69,8 @@ public class Author {
         this.placeOfBirth = placeOfBirth;
         this.placeOfDeath = placeOfDeath;
         this.biography = biography;
+        this.editions = editions;
+        this.awards = awards;
     }
 
     public int getIdAuthor() {
@@ -106,6 +129,22 @@ public class Author {
         this.biography = biography;
     }
 
+    public List<Edition> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(List<Edition> editions) {
+        this.editions = editions;
+    }
+    
+    public List<Award> getAwards() {
+        return awards;
+    }
+
+    public void setAwards(List<Award> awards) {
+        this.awards = awards;
+    }
+    
     @Override
     public String toString() {
         return "Author [idAuthor=" + idAuthor + ", name=" + name + ", birthdate=" + birthdate + ", deathdate="

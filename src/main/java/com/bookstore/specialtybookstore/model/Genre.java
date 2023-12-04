@@ -1,15 +1,21 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Genre", schema = "dbo")
-public class Genre {
+public class Genre implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +28,18 @@ public class Genre {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @JsonBackReference
+    @ManyToMany(mappedBy = "genres")
+    private List<Book> books;
+
     public Genre() {
     }
 
-    public Genre(int idGenre, String name, String description) {
+    public Genre(int idGenre, String name, String description, List<Book> books) {
         this.idGenre = idGenre;
         this.name = name;
         this.description = description;
+        this.books = books;
     }
 
     public int getIdGenre() {
@@ -53,6 +64,14 @@ public class Genre {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override

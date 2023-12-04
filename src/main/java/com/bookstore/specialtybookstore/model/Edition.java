@@ -1,6 +1,10 @@
 package com.bookstore.specialtybookstore.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,12 +12,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Edition")
-public class Edition {
+public class Edition implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,12 +61,31 @@ public class Edition {
     @JoinColumn(name = "BookIdBook")
     private Book book;
 
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(
+        name = "PublisherEdition",
+        joinColumns = @JoinColumn(name = "EditionIdEdition"),
+        inverseJoinColumns = @JoinColumn(name = "PublisherIdPublisher")
+    )
+    private List<Publisher> publishers;
+
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(
+        name = "EditionAuthor",
+        joinColumns = @JoinColumn(name = "EditionIdEdition"),
+        inverseJoinColumns = @JoinColumn(name = "AuthorIdAuthor")
+    )
+    private List<Author> authors;
+
     public Edition() {
     }
 
     public Edition(int idEdition, String format, Integer numberOfPages, String dimensions, String coverType,
             String iSBN, Integer publicationYear, BigDecimal originalPrice, String illustrationsOrPlates,
-            String limitedEditionSpecialFeatures, Language language, Book book) {
+            String limitedEditionSpecialFeatures, Language language, Book book, List<Publisher> publishers,
+            List<Author> authors) {
         this.idEdition = idEdition;
         this.format = format;
         this.numberOfPages = numberOfPages;
@@ -73,6 +98,8 @@ public class Edition {
         this.limitedEditionSpecialFeatures = limitedEditionSpecialFeatures;
         this.language = language;
         this.book = book;
+        this.publishers = publishers;
+        this.authors = authors;
     }
 
     public int getIdEdition() {
@@ -169,6 +196,22 @@ public class Edition {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public List<Publisher> getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(List<Publisher> publishers) {
+        this.publishers = publishers;
+    }
+    
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     @Override
