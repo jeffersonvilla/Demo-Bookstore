@@ -2,6 +2,7 @@ package com.bookstore.specialtybookstore.interfaces;
 
 import java.util.List;
 
+import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
 import com.bookstore.specialtybookstore.model.Book;
 
 public interface IBookService {
@@ -19,4 +20,6 @@ public interface IBookService {
 
     // Search functionality
     public List<Book> searchBookByTitle(String name);
+
+    public List<Book> searchBooksByCriteria(SearchCriteriaDTO criteria);
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
 import com.bookstore.specialtybookstore.interfaces.IBookService;
 import com.bookstore.specialtybookstore.model.Book;
 
@@ -54,6 +55,19 @@ public class BookController {
     @GetMapping("/search")
     public List<Book> searchBookByTitle(@RequestParam String title) {
         return bookService.searchBookByTitle(title);
+    }
+
+    @GetMapping("/search/criteria")
+    public List<Book> searchBooksByCriteria(
+        @RequestParam(name = "genre", required = false) List<String> genreNames,
+        @RequestParam(name = "author", required = false) List<String> authorNames
+    ){
+        SearchCriteriaDTO criteria = new SearchCriteriaDTO();
+
+        criteria.setGenreNames(genreNames);
+        criteria.setAuthorNames(authorNames);
+
+        return bookService.searchBooksByCriteria(criteria);
     }
     
 }

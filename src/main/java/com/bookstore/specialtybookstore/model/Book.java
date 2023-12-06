@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -41,6 +42,9 @@ public class Book implements Serializable{
         inverseJoinColumns = @JoinColumn(name = "GenreIdGenre")
     )
     private List<Genre> genres;
+
+    @OneToMany(mappedBy = "book")
+    private List<Edition> editions;
 
     public Book() {
     }
