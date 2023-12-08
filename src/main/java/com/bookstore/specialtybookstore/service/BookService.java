@@ -12,6 +12,7 @@ import com.bookstore.specialtybookstore.model.Author;
 import com.bookstore.specialtybookstore.model.Book;
 import com.bookstore.specialtybookstore.model.Edition;
 import com.bookstore.specialtybookstore.model.Genre;
+import com.bookstore.specialtybookstore.model.Publisher;
 import com.bookstore.specialtybookstore.repository.BookRepository;
 
 import jakarta.el.Expression;
@@ -64,12 +65,25 @@ public class BookService implements IBookService{
     public List<Book> searchBooksByCriteria(SearchCriteriaDTO criteria) {
 
         return repository.findAll(
-            BookCriteria.bookIsOfGenres(criteria.getGenreNames())
-            .and(BookCriteria.bookHasAuthors(criteria.getAuthorNames())));
+            BookCriteria.bookHasTitle(criteria.getTitle())
+            .and(BookCriteria.bookIsOfGenres(criteria.getGenreNames()))
+            .and(BookCriteria.bookHasAuthors(criteria.getAuthorNames()))
+            .and(BookCriteria.bookHasPublishers(criteria.getPublisherNames()))
+        );
 
     }
     
     private static class BookCriteria{
+
+        public static Specification<Book> bookHasTitle(String title){
+            return (root, query, cb) -> {
+
+                if(title == null) return cb.isTrue(cb.literal(true));
+
+                return cb.like(cb.lower(root.get("title")), 
+                "%" + title.toLowerCase() + "%");
+            };
+        }
 
         public static Specification<Book> bookHasAuthors(List<String> authorNames){
             return (root, query, cb) -> {
@@ -96,8 +110,6 @@ public class BookService implements IBookService{
     };
         }
 
-
-
         public static Specification<Book> bookIsOfGenres(List<String> genreNames){
             return (root, query, cb) -> {
 
@@ -116,6 +128,27 @@ public class BookService implements IBookService{
     
                 return genrePredicate;
             };   
+        }
+
+        public static Specification<Book> bookHasPublishers(List<String> publisherNames){
+            return (root, query, cb) -> {
+                if(publisherNames == null || publisherNames.isEmpty()) return null;
+
+                // Join the Book entity with the Publisher entity
+                Join<Book, Edition> editionJoin = root.join("editions");
+                Join<Edition, Publisher> publisherJoin = editionJoin.join("publishers");
+
+                // Create predicates for each publisser name
+                List<Predicate> publisherPredicates = publisherNames.stream()
+                    .map(publisherName -> cb.like(cb.lower(publisherJoin.get("name"))
+                        , "%" + publisherName.toLowerCase() + "%"))
+                    .collect(Collectors.toList());
+
+                // Combine the predicates with an OR condition
+                Predicate finalPredicate = cb.or(publisherPredicates.toArray(new Predicate[0]));
+
+                return finalPredicate;
+            };
         }
     }
 }

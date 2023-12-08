@@ -3,12 +3,24 @@ package com.bookstore.specialtybookstore.DTO;
 import java.util.List;
 
 public class SearchCriteriaDTO {
+
+    private String title;
     
     private List<String> genreNames;
 
     private List<String> authorNames;
 
+    private List<String> publisherNames;
+
     public SearchCriteriaDTO() {
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<String> getGenreNames() {
@@ -25,6 +37,14 @@ public class SearchCriteriaDTO {
 
     public void setAuthorNames(List<String> authorNames) {
         this.authorNames = authorNames;
+    }
+
+    public List<String> getPublisherNames() {
+        return publisherNames;
+    }
+
+    public void setPublisherNames(List<String> publisherNames) {
+        this.publisherNames = publisherNames;
     }
     
 }

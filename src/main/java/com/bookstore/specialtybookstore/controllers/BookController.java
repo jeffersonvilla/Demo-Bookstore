@@ -59,13 +59,17 @@ public class BookController {
 
     @GetMapping("/search/criteria")
     public List<Book> searchBooksByCriteria(
+        @RequestParam(name = "title", required = false) String title,
         @RequestParam(name = "genre", required = false) List<String> genreNames,
-        @RequestParam(name = "author", required = false) List<String> authorNames
+        @RequestParam(name = "author", required = false) List<String> authorNames,
+        @RequestParam(name = "publisher", required = false) List<String> publisherNames
     ){
         SearchCriteriaDTO criteria = new SearchCriteriaDTO();
 
+        criteria.setTitle(title);
         criteria.setGenreNames(genreNames);
         criteria.setAuthorNames(authorNames);
+        criteria.setPublisherNames(publisherNames);
 
         return bookService.searchBooksByCriteria(criteria);
     }
