@@ -26,17 +26,11 @@ public class Edition implements Serializable{
     @Column(name = "IdEdition")
     private int idEdition;
 
-    @Column(name = "format", length = 50)
-    private String format;
-
     @Column(name = "numberOfPages")
     private Integer numberOfPages;
 
     @Column(name = "dimensions", length = 50)
     private String dimensions;
-
-    @Column(name = "coverType", length = 50)
-    private String coverType;
 
     @Column(name = "ISBN", nullable = false, length = 20)
     private String ISBN;
@@ -56,6 +50,14 @@ public class Edition implements Serializable{
     @ManyToOne
     @JoinColumn(name = "IdLanguage")
     private Language language;
+
+    @ManyToOne
+    @JoinColumn(name = "IdFormat")
+    private Format format;
+
+    @ManyToOne
+    @JoinColumn(name = "IdCoverType")
+    private CoverType coverType;
 
     @ManyToOne
     @JoinColumn(name = "BookIdBook")
@@ -82,21 +84,21 @@ public class Edition implements Serializable{
     public Edition() {
     }
 
-    public Edition(int idEdition, String format, Integer numberOfPages, String dimensions, String coverType,
-            String iSBN, Integer publicationYear, BigDecimal originalPrice, String illustrationsOrPlates,
-            String limitedEditionSpecialFeatures, Language language, Book book, List<Publisher> publishers,
+    public Edition(int idEdition, Integer numberOfPages, String dimensions, String iSBN, Integer publicationYear,
+            BigDecimal originalPrice, String illustrationsOrPlates, String limitedEditionSpecialFeatures,
+            Language language, Format format, CoverType coverType, Book book, List<Publisher> publishers,
             List<Author> authors) {
         this.idEdition = idEdition;
-        this.format = format;
         this.numberOfPages = numberOfPages;
         this.dimensions = dimensions;
-        this.coverType = coverType;
         ISBN = iSBN;
         this.publicationYear = publicationYear;
         this.originalPrice = originalPrice;
         this.illustrationsOrPlates = illustrationsOrPlates;
         this.limitedEditionSpecialFeatures = limitedEditionSpecialFeatures;
         this.language = language;
+        this.format = format;
+        this.coverType = coverType;
         this.book = book;
         this.publishers = publishers;
         this.authors = authors;
@@ -108,14 +110,6 @@ public class Edition implements Serializable{
 
     public void setIdEdition(int idEdition) {
         this.idEdition = idEdition;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public Integer getNumberOfPages() {
@@ -132,14 +126,6 @@ public class Edition implements Serializable{
 
     public void setDimensions(String dimensions) {
         this.dimensions = dimensions;
-    }
-
-    public String getCoverType() {
-        return coverType;
-    }
-
-    public void setCoverType(String coverType) {
-        this.coverType = coverType;
     }
 
     public String getISBN() {
@@ -214,13 +200,29 @@ public class Edition implements Serializable{
         this.authors = authors;
     }
 
+    public Format getFormat() {
+        return format;
+    }
+
+    public void setFormat(Format format) {
+        this.format = format;
+    }
+
+    public CoverType getCoverType() {
+        return coverType;
+    }
+
+    public void setCoverType(CoverType coverType) {
+        this.coverType = coverType;
+    }
+
     @Override
     public String toString() {
-        return "Edition [idEdition=" + idEdition + ", format=" + format + ", numberOfPages=" + numberOfPages
-                + ", dimensions=" + dimensions + ", coverType=" + coverType + ", ISBN=" + ISBN + ", publicationYear="
-                + publicationYear + ", originalPrice=" + originalPrice + ", illustrationsOrPlates="
-                + illustrationsOrPlates + ", limitedEditionSpecialFeatures=" + limitedEditionSpecialFeatures
-                + ", language=" + language + ", book=" + book + "]";
+        return "Edition [idEdition=" + idEdition + ", numberOfPages=" + numberOfPages + ", dimensions=" + dimensions
+                + ", ISBN=" + ISBN + ", publicationYear=" + publicationYear + ", originalPrice=" + originalPrice
+                + ", illustrationsOrPlates=" + illustrationsOrPlates + ", limitedEditionSpecialFeatures="
+                + limitedEditionSpecialFeatures + ", language=" + language + ", format=" + format + ", coverType="
+                + coverType + ", book=" + book + ", publishers=" + publishers + ", authors=" + authors + "]";
     }
 
     

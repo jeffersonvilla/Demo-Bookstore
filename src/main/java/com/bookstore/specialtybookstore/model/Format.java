@@ -1,7 +1,5 @@
 package com.bookstore.specialtybookstore.model;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,31 +8,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Language")
-public class Language implements Serializable{
+@Table(name = "Format")
+public class Format {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdLanguage")
-    private int idLanguage;
-    
+    @Column(name = "IdFormat")
+    private int idFormat;
+
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    public Language() {
+    public Format() {
     }
 
-    public Language(int idLanguage, String name) {
-        this.idLanguage = idLanguage;
+    public Format(int idFormat, String name) {
+        this.idFormat = idFormat;
         this.name = name;
     }
-    
-    public int getIdLanguage() {
-        return idLanguage;
+
+    public int getIdFormat() {
+        return idFormat;
     }
 
-    public void setIdLanguage(int idLanguage) {
-        this.idLanguage = idLanguage;
+    public void setIdFormat(int idFormat) {
+        this.idFormat = idFormat;
     }
 
     public String getName() {
@@ -47,7 +45,7 @@ public class Language implements Serializable{
 
     @Override
     public String toString() {
-        return "Language [idLanguage=" + idLanguage + ", name=" + name + "]";
+        return "Format [idFormat=" + idFormat + ", name=" + name + "]";
     }
 
 }
