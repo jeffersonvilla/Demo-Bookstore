@@ -1,7 +1,5 @@
 package com.bookstore.specialtybookstore.model;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,31 +8,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Language")
-public class Language implements Serializable{
+@Table(name = "CoverType")
+public class CoverType {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdLanguage")
-    private int idLanguage;
-    
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "IdCoverType")
+    private int idCoverType;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    public Language() {
+    public CoverType() {
     }
 
-    public Language(int idLanguage, String name) {
-        this.idLanguage = idLanguage;
+    public CoverType(int idCoverType, String name) {
+        this.idCoverType = idCoverType;
         this.name = name;
     }
-    
-    public int getIdLanguage() {
-        return idLanguage;
+
+    public int getIdCoverType() {
+        return idCoverType;
     }
 
-    public void setIdLanguage(int idLanguage) {
-        this.idLanguage = idLanguage;
+    public void setIdCoverType(int idCoverType) {
+        this.idCoverType = idCoverType;
     }
 
     public String getName() {
@@ -47,7 +45,7 @@ public class Language implements Serializable{
 
     @Override
     public String toString() {
-        return "Language [idLanguage=" + idLanguage + ", name=" + name + "]";
+        return "CoverType [idCoverType=" + idCoverType + ", name=" + name + "]";
     }
 
 }
