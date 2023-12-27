@@ -49,12 +49,21 @@ public class Book implements Serializable{
     public Book() {
     }
 
-    public Book(int idBook, String title, String description, String keywords, List<Genre> genres) {
+    public Book(int idBook, String title, String description, String keywords) {
+        this.idBook = idBook;
+        this.title = title;
+        this.description = description;
+        this.keywords = keywords;
+    }
+
+    public Book(int idBook, String title, String description, String keywords, List<Genre> genres,
+            List<Edition> editions) {
         this.idBook = idBook;
         this.title = title;
         this.description = description;
         this.keywords = keywords;
         this.genres = genres;
+        this.editions = editions;
     }
 
     public int getIdBook() {

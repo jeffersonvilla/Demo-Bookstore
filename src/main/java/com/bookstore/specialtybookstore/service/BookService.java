@@ -7,20 +7,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
+import com.bookstore.specialtybookstore.exceptions.BookCreationException;
 import com.bookstore.specialtybookstore.interfaces.IBookService;
 import com.bookstore.specialtybookstore.model.Author;
 import com.bookstore.specialtybookstore.model.Book;
 import com.bookstore.specialtybookstore.model.Edition;
-import com.bookstore.specialtybookstore.model.Genre;
 import com.bookstore.specialtybookstore.model.Publisher;
 import com.bookstore.specialtybookstore.repository.BookRepository;
 
-import jakarta.el.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.metamodel.ListAttribute;
-import jakarta.persistence.metamodel.SetAttribute;
 
 @Service
 public class BookService implements IBookService{
@@ -33,7 +29,16 @@ public class BookService implements IBookService{
 
     @Override
     public Book createBook(Book book) {
-        return this.repository.save(book);
+
+        if (book == null || book.getTitle().isBlank()) {
+            throw new IllegalArgumentException("The book is not valid");
+        }
+
+        try {
+            return this.repository.save(book);
+        } catch (Exception e) {
+            throw new BookCreationException("Error creating the book", e);
+        }
     }
 
     @Override
@@ -66,6 +71,7 @@ public class BookService implements IBookService{
 
         return repository.findAll(
             BookCriteria.bookHasTitle(criteria.getTitle())
+            .and(BookCriteria.bookContainsTextInDescription(criteria.getDescriptionText()))
             .and(BookCriteria.bookIsOfGenres(criteria.getGenreNames()))
             .and(BookCriteria.bookHasAuthors(criteria.getAuthorNames()))
             .and(BookCriteria.bookHasPublishers(criteria.getPublisherNames()))
@@ -82,6 +88,16 @@ public class BookService implements IBookService{
 
                 return cb.like(cb.lower(root.get("title")), 
                 "%" + title.toLowerCase() + "%");
+            };
+        }
+
+        public static Specification<Book> bookContainsTextInDescription(String text){
+            return(root, query, cb) -> {
+
+                if(text == null) return cb.isTrue(cb.literal(true));
+
+                return cb.like(cb.lower(root.get("description")), 
+                "%" + text.toLowerCase() + "%");
             };
         }
 
