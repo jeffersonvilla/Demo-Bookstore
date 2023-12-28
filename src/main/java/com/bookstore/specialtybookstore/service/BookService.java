@@ -30,9 +30,12 @@ public class BookService implements IBookService{
     @Override
     public Book createBook(Book book) {
 
-        if (book == null || book.getTitle().isBlank()) {
+        if (book == null || book.getTitle() == null || book.getTitle().isBlank()) {
             throw new IllegalArgumentException("The book is not valid");
         }
+        
+        //title too large and keywords too large
+
 
         try {
             return this.repository.save(book);

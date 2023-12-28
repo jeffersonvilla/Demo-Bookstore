@@ -20,10 +20,16 @@ import com.bookstore.specialtybookstore.interfaces.IBookService;
 import com.bookstore.specialtybookstore.mapper.BookMapper;
 import com.bookstore.specialtybookstore.model.Book;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/book")
+@Tag(name = "Book Controller", description = "Operations related to books")
 public class BookController {
 
     private IBookService bookService;
@@ -35,11 +41,18 @@ public class BookController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new book", responses = {
+        @ApiResponse(responseCode = "201", description = "Book created", content = {
+             @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class))
+        }),
+        @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
     public ResponseEntity<BookDTO> createBook(@Valid @RequestBody BookDTO bookDTO) {
         
         Book createdBook = bookService.createBook(mapper.toBook(bookDTO));
 
-        return new ResponseEntity<BookDTO>(mapper.toDTO(createdBook), HttpStatus.OK);
+        return new ResponseEntity<BookDTO>(mapper.toDTO(createdBook), HttpStatus.CREATED);
     }
 /* 
     @GetMapping("/{id}")
