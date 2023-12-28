@@ -1,5 +1,11 @@
 package com.bookstore.specialtybookstore.service;
 
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.BOOK_CREATION_ERROR;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_EMPTY_TITLE;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_NULL_BOOK;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_REQUIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,7 +66,7 @@ public class BookServiceTest {
             IllegalArgumentException.class,
             () -> bookService.createBook(invalidBook));
 
-        assertEquals("The book is not valid", exception.getMessage());
+        assertEquals(ERROR_NULL_BOOK, exception.getMessage());
 
         verify(mockRepository, times(0)).save(any());
     }
@@ -76,7 +82,47 @@ public class BookServiceTest {
             IllegalArgumentException.class,
             () -> bookService.createBook(invalidBook));
 
-        assertEquals("The book is not valid", exception.getMessage());
+        assertEquals(ERROR_EMPTY_TITLE, exception.getMessage());
+
+        verify(mockRepository, times(0)).save(any());
+    }
+
+    @Test
+    void createBook_InvalidBook_TooLargeTitle() {
+        // Arrange
+        Book invalidBook = new Book();
+        invalidBook.setTitle("In the ethereal glow of moonlight, whispers of the night dance"+
+        " through the mystic air. Shadows weave tales of forgotten dreams, while stars paint celestial"+
+        " art upon the canvas of the cosmos. Time pauses, and the universe unveils its enigmatic "+
+        "symphony, echoing the secrets of the infinite.");
+
+        // Act and Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> bookService.createBook(invalidBook));
+
+        assertEquals(ERROR_TITLE_LENGTH_EXCEEDS, exception.getMessage());
+
+        verify(mockRepository, times(0)).save(any());
+    }
+
+    @Test
+    void createBook_InvalidBook_TooLargeKeywords() {
+        // Arrange
+        Book invalidBook = new Book();
+        invalidBook.setTitle("Title");
+        invalidBook.setKeywords("In the ethereal glow of moonlight, whispers of the night dance"+
+        " through the mystic air. Shadows weave tales of forgotten dreams, while stars paint celestial"+
+        " art upon the canvas of the cosmos. Time pauses, and the universe unveils its enigmatic "+
+        "symphony, echoing the secrets of the infinite.");
+
+        // Act and Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> bookService.createBook(invalidBook));
+
+        String thrownExceptionMessage = exception.getMessage();
+        assertEquals(ERROR_KEYWORDS_LENGTH_EXCEEDS, thrownExceptionMessage);
 
         verify(mockRepository, times(0)).save(any());
     }
@@ -91,7 +137,7 @@ public class BookServiceTest {
             IllegalArgumentException.class,
             () -> bookService.createBook(invalidBook));
 
-        assertEquals("The book is not valid", exception.getMessage());
+        assertEquals(ERROR_TITLE_REQUIRED, exception.getMessage());
 
         verify(mockRepository, times(0)).save(any());
     }
@@ -106,6 +152,6 @@ public class BookServiceTest {
         // Act and Assert
         BookCreationException exception = assertThrows(BookCreationException.class,
                 () -> bookService.createBook(validBook));
-        assertEquals("Error creating the book", exception.getMessage());
+        assertEquals(BOOK_CREATION_ERROR, exception.getMessage());
     }
 }

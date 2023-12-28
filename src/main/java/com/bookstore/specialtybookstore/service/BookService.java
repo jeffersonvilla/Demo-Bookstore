@@ -1,5 +1,12 @@
 package com.bookstore.specialtybookstore.service;
 
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.BOOK_CREATION_ERROR;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_EMPTY_TITLE;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_NULL_BOOK;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_REQUIRED;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,17 +37,34 @@ public class BookService implements IBookService{
     @Override
     public Book createBook(Book book) {
 
-        if (book == null || book.getTitle() == null || book.getTitle().isBlank()) {
-            throw new IllegalArgumentException("The book is not valid");
-        }
-        
-        //title too large and keywords too large
-
+        validateBook(book);
 
         try {
             return this.repository.save(book);
         } catch (Exception e) {
-            throw new BookCreationException("Error creating the book", e);
+            throw new BookCreationException(BOOK_CREATION_ERROR, e);
+        }
+    }
+
+    private void validateBook(Book book) {
+        if (book == null) {
+            throw new IllegalArgumentException(ERROR_NULL_BOOK);
+        }
+        
+        if (book.getTitle() == null) {
+            throw new IllegalArgumentException(ERROR_TITLE_REQUIRED);
+        }
+
+        if (book.getTitle().isBlank()) {
+            throw new IllegalArgumentException(ERROR_EMPTY_TITLE);
+        }
+    
+        if (book.getTitle().length() > 255) {
+            throw new IllegalArgumentException(ERROR_TITLE_LENGTH_EXCEEDS);
+        }
+    
+        if (book.getKeywords() != null && book.getKeywords().length() > 255) {
+            throw new IllegalArgumentException(ERROR_KEYWORDS_LENGTH_EXCEEDS);
         }
     }
 
