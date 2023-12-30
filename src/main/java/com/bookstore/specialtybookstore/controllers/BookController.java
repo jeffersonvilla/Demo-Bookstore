@@ -56,16 +56,21 @@ public class BookController {
 
         return new ResponseEntity<BookDTO>(mapper.toDTO(createdBook), HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+
+        List<BookDTO> books = bookService.getAllBooks().stream().map(mapper::toDTO).toList();
+
+        return new ResponseEntity<List<BookDTO>>(books, HttpStatus.OK);
+    }
 /* 
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable int id) {
         return bookService.getBookById(id);
     }
 
-    @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
-    }
+    
 
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable int id, @RequestBody Book book) {
