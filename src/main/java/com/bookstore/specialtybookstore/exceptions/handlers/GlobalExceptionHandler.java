@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
+import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BookCreationException.class)
     public ResponseEntity<ErrorResponse> handleBookCreationException(BookCreationException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(GetAllBooksException.class)
+    public ResponseEntity<ErrorResponse> handleGettingAllBooksException(GetAllBooksException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

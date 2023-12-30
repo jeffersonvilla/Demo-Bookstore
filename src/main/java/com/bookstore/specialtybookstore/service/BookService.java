@@ -1,11 +1,12 @@
 package com.bookstore.specialtybookstore.service;
 
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.BOOK_CREATION_ERROR;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_EMPTY_TITLE;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_NULL_BOOK;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_REQUIRED;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.BOOK_CREATION_ERROR;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_EMPTY_TITLE;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_ALL_BOOKS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_REQUIRED;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
+import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
 import com.bookstore.specialtybookstore.interfaces.IBookService;
 import com.bookstore.specialtybookstore.model.Author;
 import com.bookstore.specialtybookstore.model.Book;
@@ -75,7 +77,11 @@ public class BookService implements IBookService{
 
     @Override
     public List<Book> getAllBooks() {
-        return this.repository.findAll();
+        try {
+            return this.repository.findAll();
+        } catch (Exception e) {
+            throw new GetAllBooksException(ERROR_GETTING_ALL_BOOKS, e);
+        }
     }
 
     @Override
