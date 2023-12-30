@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
 import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
@@ -48,6 +49,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGettingAllBooksException(GetAllBooksException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        String errorMessage = "Failed to convert value '" + ex.getValue() + "' of type '" +
+                             ex.getValue().getClass().getSimpleName() + "' to required type '" +
+                             ex.getRequiredType().getSimpleName() + "'";
+        ErrorResponse errorResponse = new ErrorResponse("Bad Request", errorMessage);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     // Generic handler for other unhandled exceptions
