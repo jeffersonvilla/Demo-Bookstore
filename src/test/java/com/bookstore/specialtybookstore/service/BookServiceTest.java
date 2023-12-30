@@ -1,11 +1,11 @@
 package com.bookstore.specialtybookstore.service;
 
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.BOOK_CREATION_ERROR;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_EMPTY_TITLE;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_NULL_BOOK;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
-import static com.bookstore.specialtybookstore.exceptions.ExceptionMessages.ERROR_TITLE_REQUIRED;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.BOOK_CREATION_ERROR;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_EMPTY_TITLE;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_REQUIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
