@@ -24,9 +24,12 @@ import com.bookstore.specialtybookstore.mapper.BookMapper;
 import com.bookstore.specialtybookstore.model.Book;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -60,9 +63,15 @@ public class BookController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all books", responses = {
+        @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
+    })
     public ResponseEntity<List<BookDTO>> getAllBooks( 
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size ) {
+            @Parameter(description = "Page number", in = ParameterIn.QUERY) 
+                @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page", in = ParameterIn.QUERY)    
+                @RequestParam(defaultValue = "10") int size ) {
 
         PageRequest pageable = PageRequest.of(page, size);
 
