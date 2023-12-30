@@ -2,6 +2,9 @@ package com.bookstore.specialtybookstore.interfaces;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
 import com.bookstore.specialtybookstore.model.Book;
 
@@ -12,7 +15,7 @@ public interface IBookService {
     
     public Book getBookById(int id);
     
-    public List<Book> getAllBooks();
+    public Page<Book> getAllBooks(Pageable pageable);
     
     public Book updateBook(Book book);
     

@@ -11,6 +11,8 @@ import static com.bookstore.specialtybookstore.exceptions.error_messages.Excepti
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -76,9 +78,9 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public Page<Book> getAllBooks(Pageable pageable) {
         try {
-            return this.repository.findAll();
+            return this.repository.findAll(pageable);
         } catch (Exception e) {
             throw new GetAllBooksException(ERROR_GETTING_ALL_BOOKS, e);
         }

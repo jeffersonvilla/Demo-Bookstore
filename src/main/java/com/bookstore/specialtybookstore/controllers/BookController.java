@@ -2,6 +2,8 @@ package com.bookstore.specialtybookstore.controllers;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -58,9 +60,14 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> getAllBooks() {
+    public ResponseEntity<List<BookDTO>> getAllBooks( 
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size ) {
 
-        List<BookDTO> books = bookService.getAllBooks().stream().map(mapper::toDTO).toList();
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<Book> bookPage = bookService.getAllBooks(pageable);
+        List<BookDTO> books = bookPage.getContent().stream().map(mapper::toDTO).toList();
 
         return new ResponseEntity<List<BookDTO>>(books, HttpStatus.OK);
     }
