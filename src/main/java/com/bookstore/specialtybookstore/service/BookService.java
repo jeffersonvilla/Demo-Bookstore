@@ -7,6 +7,7 @@ import static com.bookstore.specialtybookstore.exceptions.error_messages.Excepti
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_REQUIRED;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.PAGEABLE_NULL_ERROR;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,6 +80,9 @@ public class BookService implements IBookService{
 
     @Override
     public Page<Book> getAllBooks(Pageable pageable) {
+
+        if(pageable == null) throw new RuntimeException(PAGEABLE_NULL_ERROR);
+
         try {
             return this.repository.findAll(pageable);
         } catch (Exception e) {
