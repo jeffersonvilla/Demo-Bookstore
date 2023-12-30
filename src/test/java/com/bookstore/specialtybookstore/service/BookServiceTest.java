@@ -2,14 +2,17 @@ package com.bookstore.specialtybookstore.service;
 
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.BOOK_CREATION_ERROR;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_EMPTY_TITLE;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_ALL_BOOKS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_REQUIRED;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.PAGEABLE_NULL_ERROR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,8 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
+import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
 import com.bookstore.specialtybookstore.model.Book;
 import com.bookstore.specialtybookstore.repository.BookRepository;
 
@@ -154,4 +160,51 @@ public class BookServiceTest {
                 () -> bookService.createBook(validBook));
         assertEquals(BOOK_CREATION_ERROR, exception.getMessage());
     }
+
+    @Test
+    void getAllBooks_Success() {
+        // Arrange
+        Pageable pageable = mock(Pageable.class);
+        Page<Book> expectedPage = mock(Page.class);
+
+        when(mockRepository.findAll(pageable)).thenReturn(expectedPage);
+
+        // Act
+        Page<Book> resultPage = bookService.getAllBooks(pageable);
+
+        // Assert
+        assertEquals(expectedPage, resultPage);
+        verify(mockRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    void getAllBooks_ErrorInRepository() {
+        // Arrange
+        Pageable pageable = mock(Pageable.class);
+
+        when(mockRepository.findAll(pageable)).thenThrow(new RuntimeException("Some error"));
+
+        // Act and Assert
+        GetAllBooksException thrownException = assertThrows(GetAllBooksException.class, 
+                () -> bookService.getAllBooks(pageable));
+
+        assertEquals(ERROR_GETTING_ALL_BOOKS, thrownException.getMessage());
+
+        verify(mockRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    void getAllBooks_Error_NullPageable() {
+        // Arrange
+        Pageable pageable = null;
+
+        // Act and Assert
+        RuntimeException thrownException = assertThrows(RuntimeException.class, 
+                () -> bookService.getAllBooks(pageable));
+
+        assertEquals(PAGEABLE_NULL_ERROR, thrownException.getMessage());
+
+        verify(mockRepository, times(0)).findAll(pageable);
+    }
+
 }
