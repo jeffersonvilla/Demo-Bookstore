@@ -12,6 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
 import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
+import com.bookstore.specialtybookstore.exceptions.GetBookByIdException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -47,6 +48,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GetAllBooksException.class)
     public ResponseEntity<ErrorResponse> handleGettingAllBooksException(GetAllBooksException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(GetBookByIdException.class)
+    public ResponseEntity<ErrorResponse> handleGettingBookByIdException(GetBookByIdException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

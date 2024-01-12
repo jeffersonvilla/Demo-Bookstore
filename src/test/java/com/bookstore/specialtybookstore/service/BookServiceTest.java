@@ -3,6 +3,8 @@ package com.bookstore.specialtybookstore.service;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.BOOK_CREATION_ERROR;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_EMPTY_TITLE;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_ALL_BOOKS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_BOOK_BY_ID;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_INVALID_BOOK_ID;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
@@ -12,10 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
 import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
+import com.bookstore.specialtybookstore.exceptions.GetBookByIdException;
 import com.bookstore.specialtybookstore.model.Book;
 import com.bookstore.specialtybookstore.repository.BookRepository;
 
@@ -207,4 +213,51 @@ public class BookServiceTest {
         verify(mockRepository, times(0)).findAll(pageable);
     }
 
+    @Test
+    void getBookById_Error_Invalid_Book_Id(){
+        //Arrange
+        int bookId = -1;
+
+        // Act and Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class, () -> bookService.getBookById(bookId));
+
+        assertEquals(ERROR_INVALID_BOOK_ID, exception.getMessage());   
+    }
+
+    @Test
+    void getBookById_ErrorInRepository() {
+
+        int bookId = 2;
+
+        when(mockRepository.findById(any())).thenThrow(new RuntimeException("Simulated repository error"));
+
+        // Act and Assert
+        GetBookByIdException exception = assertThrows(GetBookByIdException.class,
+                () -> bookService.getBookById(bookId));
+                
+        assertEquals(ERROR_GETTING_BOOK_BY_ID, exception.getMessage());
+    }
+
+    @Test
+    void getBookById_Success(){
+        //Arrange
+        int bookId = 1;
+
+        Book book = new Book();
+        book.setIdBook(bookId);
+        book.setTitle("Valid title");
+    
+        when(mockRepository.findById(any())).thenReturn(Optional.of(book));
+
+        // Act
+        Book createdBook = bookService.getBookById(bookId);
+
+        // Assert
+        assertNotNull(createdBook);
+        assertEquals(book, createdBook);
+        
+        //Verify
+        verify(mockRepository, times(1)).findById(any());
+    }
 }

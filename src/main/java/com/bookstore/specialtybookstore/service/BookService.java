@@ -3,6 +3,8 @@ package com.bookstore.specialtybookstore.service;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.BOOK_CREATION_ERROR;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_EMPTY_TITLE;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_ALL_BOOKS;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_GETTING_BOOK_BY_ID;
+import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_INVALID_BOOK_ID;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_KEYWORDS_LENGTH_EXCEEDS;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_NULL_BOOK;
 import static com.bookstore.specialtybookstore.exceptions.error_messages.ExceptionMessages.ERROR_TITLE_LENGTH_EXCEEDS;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.bookstore.specialtybookstore.DTO.SearchCriteriaDTO;
 import com.bookstore.specialtybookstore.exceptions.BookCreationException;
 import com.bookstore.specialtybookstore.exceptions.GetAllBooksException;
+import com.bookstore.specialtybookstore.exceptions.GetBookByIdException;
 import com.bookstore.specialtybookstore.interfaces.IBookService;
 import com.bookstore.specialtybookstore.model.Author;
 import com.bookstore.specialtybookstore.model.Book;
@@ -75,7 +78,14 @@ public class BookService implements IBookService{
 
     @Override
     public Book getBookById(int id) {
-        return this.repository.findById(id).get();
+
+        if(id < 1) throw new IllegalArgumentException(ERROR_INVALID_BOOK_ID);
+
+        try{
+            return this.repository.findById(id).get();
+        }catch(Exception e){
+            throw new GetBookByIdException(ERROR_GETTING_BOOK_BY_ID, e);
+        }
     }
 
     @Override

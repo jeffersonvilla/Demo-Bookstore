@@ -26,6 +26,7 @@ import com.bookstore.specialtybookstore.model.Book;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,7 +65,10 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get all books", responses = {
-        @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content),
+        @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+            @Content(mediaType = "application/json", 
+                array = @ArraySchema(schema = @Schema(implementation = BookDTO.class)))
+        }),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<BookDTO>> getAllBooks( 
@@ -80,14 +84,21 @@ public class BookController {
 
         return new ResponseEntity<List<BookDTO>>(books, HttpStatus.OK);
     }
-/* 
+    
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable int id) {
-        return bookService.getBookById(id);
+    @Operation(summary = "Get book by id", responses = {
+        @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class))}),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
+    })
+    public ResponseEntity<BookDTO> getBookById(
+        @Parameter(description = "Id of the book", in = ParameterIn.PATH)
+            @PathVariable int id) {
+
+        return new ResponseEntity<BookDTO>(mapper.toDTO(bookService.getBookById(id)), HttpStatus.OK);
     }
 
-    
-
+/* 
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable int id, @RequestBody Book book) {
         book.setIdBook(id);
